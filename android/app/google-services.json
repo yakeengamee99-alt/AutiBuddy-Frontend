@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "397729294479",
+    "project_id": "autibuddy-b2f45",
+    "storage_bucket": "autibuddy-b2f45.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:397729294479:android:e2fc398fd27ecd6f98a8fa",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBehYKn5Ni4bC7v5sn-e44FDE_EzoUOHsE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
