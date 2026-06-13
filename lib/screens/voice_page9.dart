@@ -142,7 +142,7 @@ class _BananaScreenState extends State<BananaScreen> {
       });
 
       final response = await dio.post(
-        "http://localhost:5210/api/Attempts",
+        "http://10.0.2.2:5210/api/Attempts",
         data: formData,
       );
 

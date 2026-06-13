@@ -1,23 +1,63 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'setting_screens.dart';
 import 'parent_dashboard_screens.dart';
 import 'excrise_screens.dart';
 
-class HomeScreens extends StatelessWidget {
+class HomeScreens extends StatefulWidget {
   const HomeScreens({super.key});
 
+  @override
+  State<HomeScreens> createState() => _HomeScreensState();
+}
+
+class _HomeScreensState extends State<HomeScreens> {
+  static bool didResetOnAppStart = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    if (!didResetOnAppStart) {
+      didResetOnAppStart = true;
+      resetProgressForNewSession();
+    }
+  }
+
+  Future<void> resetProgressForNewSession() async {
+    final User? user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) return;
+
+    await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
+      // القيم القديمة التي يقرأها الـ Dashboard الحالي
+      'correctNumberAnswers': 0,
+      'correctAnimalAnswers': 0,
+      'correctFoodAnswers': 0,
+      'pronunciationAccuracy': 0,
+
+      // قيم current لو استخدمناها لاحقًا
+      'currentNumberAnswers': 0,
+      'currentAnimalAnswers': 0,
+      'currentFoodAnswers': 0,
+      'currentPronunciationAccuracy': 0,
+
+      'sessionStartedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+
+    debugPrint('Progress reset for new session');
+  }
+
   Future<void> logout(BuildContext context) async {
+    didResetOnAppStart = false;
+
     await FirebaseAuth.instance.signOut();
 
     if (!context.mounted) return;
 
-    Navigator.pushNamedAndRemoveUntil(
-      context,
-      '/login',
-      (route) => false,
-    );
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
   }
 
   @override
@@ -59,10 +99,7 @@ class HomeScreens extends StatelessWidget {
                   const CircleAvatar(
                     radius: 24,
                     backgroundColor: Color(0xFF4BB6B7),
-                    child: Icon(
-                      Icons.person,
-                      color: Colors.white,
-                    ),
+                    child: Icon(Icons.person, color: Colors.white),
                   ),
                   const SizedBox(width: 12),
                   Expanded(
@@ -91,10 +128,7 @@ class HomeScreens extends StatelessWidget {
                   ),
                   IconButton(
                     onPressed: () => logout(context),
-                    icon: const Icon(
-                      Icons.logout,
-                      color: Color(0xFF1E3A8A),
-                    ),
+                    icon: const Icon(Icons.logout, color: Color(0xFF1E3A8A)),
                   ),
                 ],
               ),
@@ -107,7 +141,11 @@ class HomeScreens extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: InkWell(
                 borderRadius: BorderRadius.circular(40),
-                onTap: () {
+                onTap: () async {
+                  await resetProgressForNewSession();
+
+                  if (!context.mounted) return;
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -139,10 +177,7 @@ class HomeScreens extends StatelessWidget {
                     Positioned(
                       right: 0,
                       top: -15,
-                      child: Image.asset(
-                        'assets/images/yyy.png',
-                        height: 100,
-                      ),
+                      child: Image.asset('assets/images/yyy.png', height: 100),
                     ),
                   ],
                 ),
@@ -188,10 +223,7 @@ class HomeScreens extends StatelessWidget {
                     Positioned(
                       right: 5,
                       top: -5,
-                      child: Image.asset(
-                        'assets/images/ttt.png',
-                        height: 80,
-                      ),
+                      child: Image.asset('assets/images/ttt.png', height: 80),
                     ),
                   ],
                 ),
