@@ -77,7 +77,7 @@ class ParentDashboardScreen extends StatelessWidget {
                 (data['correctFoodAnswers'] ?? 0) as int;
 
             final int pronunciationAccuracy =
-                (data['pronunciationAccuracy'] ?? 0) as int;
+                (data['currentPronunciationAccuracy'] ?? 0) as int;
 
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25),

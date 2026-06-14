@@ -44,6 +44,10 @@ class _HomeScreensState extends State<HomeScreens> {
       'currentFoodAnswers': 0,
       'currentPronunciationAccuracy': 0,
 
+      // مهم جدًا لحساب متوسط Voice Practice
+      'currentPronunciationTotal': 0,
+      'currentPronunciationCount': 0,
+
       'sessionStartedAt': FieldValue.serverTimestamp(),
     }, SetOptions(merge: true));
 

@@ -164,9 +164,34 @@ class _TomatoScreenState extends State<TomatoScreen> {
       final bool success = data["success"] == true;
       final String recognizedText = data["recognizedText"]?.toString() ?? "";
 
-      await FirebaseFirestore.instance.collection("users").doc(user.uid).set({
-        "pronunciationAccuracy": accuracy,
-      }, SetOptions(merge: true));
+      final userRef = FirebaseFirestore.instance
+          .collection("users")
+          .doc(user.uid);
+
+      await FirebaseFirestore.instance.runTransaction((transaction) async {
+        final snapshot = await transaction.get(userRef);
+
+        final Map<String, dynamic> userData =
+            snapshot.data() as Map<String, dynamic>? ?? {};
+
+        final int oldTotal =
+            (userData["currentPronunciationTotal"] ?? 0) as int;
+
+        final int oldCount =
+            (userData["currentPronunciationCount"] ?? 0) as int;
+
+        final int newTotal = oldTotal + accuracy;
+        final int newCount = oldCount + 1;
+
+        final int averageAccuracy = (newTotal / newCount).round();
+
+        transaction.set(userRef, {
+          "pronunciationAccuracy": averageAccuracy,
+          "currentPronunciationAccuracy": averageAccuracy,
+          "currentPronunciationTotal": newTotal,
+          "currentPronunciationCount": newCount,
+        }, SetOptions(merge: true));
+      });
 
       if (!mounted) return;
 
