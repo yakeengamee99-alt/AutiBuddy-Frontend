@@ -16,7 +16,7 @@ class WelcomeScreens extends StatelessWidget {
             height: 320,
             width: double.infinity,
             decoration: const BoxDecoration(
-              color: Color(0xFF4DB6AC),
+              color: Color(0xFF1E3A8A),
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(30),
                 bottomRight: Radius.circular(30),
@@ -49,7 +49,7 @@ class WelcomeScreens extends StatelessWidget {
           // Login Button
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF4DB6AC),
+              backgroundColor: const Color.fromARGB(255, 33, 150, 243),
               minimumSize: const Size(200, 50),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(25),

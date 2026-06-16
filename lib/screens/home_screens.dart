@@ -145,11 +145,7 @@ class _HomeScreensState extends State<HomeScreens> {
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: InkWell(
                 borderRadius: BorderRadius.circular(40),
-                onTap: () async {
-                  await resetProgressForNewSession();
-
-                  if (!context.mounted) return;
-
+                onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
